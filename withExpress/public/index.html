@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .comment{
+            border: 1px solid black;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- (/) browser ki window ma jo likjhuwa ha us ka jo base url us par implement karna ha (eg: localhost:3000/then url) -->
+
+    <a href="/static/car.jfif">DownloadFile</a>
+
+
+    <h1>My dummyy weather App</h1>
+    <form onsubmit=" getWeather(); return false">
+        <label for="">City:</label>
+        <input type="text" id="cityName">
+        <br>
+        <button type="submit">Get Weather</button>
+    </form>
+    <div id="result"></div>
+
+    <!-- <div id="comments">
+        <h2>Comments</h2>
+        <form id="postCommentForm">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <input type="text" id="commentInput" placeholder="Enter your comment">
+            <button type="submit">Post</button>
+        </form>
+        <div id="previousComments">
+            
+        </div>
+    </div> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module">
+
+        window.getWeather = function(){
+        let cityName = document.querySelector("#cityName").value;
+        axios.post(`/weather`, {
+            cityName,
+        })
+        .then(res => {
+            console.log(res.data)
+            document.querySelector("#result").innerHTML = res.data.temp;
+        }).catch((err) => {
+            console.log(err);
+            document.querySelector("#result").innerHTML = err;
+        })
+        }
+
+
+
+    //     window.getWeather = function(){
+    //         let cityName = document.querySelector("#cityName").value;
+    //         axios.get(`/weather/${cityName}`)
+    //         .then(res => {
+    //             console.log(res.data)
+    //             document.querySelector("#result").innerHTML = `current temperature is ${res.data.tempInC}`;
+    //         }).catch((err) => {
+    //             console.log(err);
+    //             document.querySelector("#result").innerHTML = err;
+    //         })
+    //     }
+
+    //    document.querySelector("#postCommentForm").addEventListener("submit", async(event) => {
+    //         event.preventDefault();
+    //         let nameInput = document.querySelector("#nameInput").value;
+    //         let commentInput = document.querySelector("#commentInput").value;
+    //         try {
+    //             const axiosResponse = await axios.post(`/comment/${nameInput}`, {
+    //                 comment: commentInput,
+    //             });
+    //             console.log(axiosResponse.data);
+    //             document.querySelector("#previousComments").innerHTML += `<div class="comment">
+    //             <h3 class="commentName">${nameInput}</h3>
+    //             <p class="commentText">${commentInput}</p>
+    //             </div>`;
+                
+    //         } catch (err) {
+    //             console.log(err);
+    //             document.querySelector("#result").innerHTML = err;
+    //         }
+    //     })
+
+        // const getAllComments = async() => {
+        //     const commentRes = await axios.get("/comments");
+        //     console.log(commentRes.data);
+        //     commentRes.data?.map((comment) => {
+        //         document.querySelector("#previousComments").innerHTML += `<div class="comment">
+        //         <h3 class="commentName">${comment.name}</h3>
+        //         <p class="commentText">${comment.Input}</p>
+        //         </div>`;
+        //     })
+        // }
+        // getAllComments()
+
+    </script>
+</body>
+</html>

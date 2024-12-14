@@ -5,123 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        .comment{
-            border: 1px solid black;
-            border-radius: 20px;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
+        
     </style>
 </head>
-<body>
-    <!-- (/) browser ki window ma jo likjhuwa ha us ka jo base url us par implement karna ha (eg: localhost:3000/then url) -->
+<body onload="getAllPost()">
 
-    <a href="/static/car.jfif">DownloadFile</a>
-
-
-    <h1>My dummy weather App</h1>
-    <form id="getWeather">
-        <label for="">City:</label>
-        <input type="text" id="cityName">
+    <h1>My post CRUD app</h1>
+    <h2>Create a Post</h2>
+    <form onsubmit="createPost(); return false">
+        <label for="postTitle">Title:</label>
+        <input id="postTitle" placeholder="Enter title" type="text">
         <br>
-        <button type="submit">Get weather</button>
+
+        <label for="postText">Text:</label>
+        <textarea name="" id="postText" placeholder="Enter text"></textarea>
+        <br><br>
+
+        <button type="submit">Submit Post</button>
+        <br><br>
+
+        <div id="result"></div>
+        <br><br>
+        <div id="posts"></div>
+
     </form>
-    <!-- <form onsubmit=" getWeather(); return false">
-        <label for="">City:</label>
-        <input type="text" id="cityName">
-        <br>
-        <button type="submit">Get Weather</button>
-    </form> -->
-    <div id="result"></div>
-
-    <!-- <div id="comments">
-        <h2>Comments</h2>
-        <form id="postCommentForm">
-            <input type="text" id="nameInput" placeholder="Enter your name">
-            <input type="text" id="commentInput" placeholder="Enter your comment">
-            <button type="submit">Post</button>
-        </form>
-        <div id="previousComments">
-            
-        </div>
-    </div> -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module">
+    <script type="module">            
 
-        // window.getWeather = function(){
-        // let cityName = document.querySelector("#cityName").value;
-        // axios.post(`/weather`, {
-        //     cityName,
-        // })
-        // .then(res => {
-        //     console.log(res.data)
-        //     document.querySelector("#result").innerHTML = res.data.temp;
-        // }).catch((err) => {
-        //     console.log(err);
-        //     document.querySelector("#result").innerHTML = err;
-        // })
-        // }
+        window.createPost = function () {
+            let postTitle = document.getElementById("postTitle").value;
+            let postText = document.getElementById("postText").value;
 
-        document.querySelector("#getWeather").addEventListener("submit", async(event) => {
-            event.preventDefault();
-            let cityName = document.getElementById("cityName").value;
-            try {
-               const res = await axios.get(`/weather/${cityName}`);
-               console.log(res.status);
-               
-               document.getElementById("result").innerHTML = res.status === 200 ?  res.data.weatherDataSend.temp : res.data.message;
-            } catch (error) {
-                console.log("error");
-                
-            }
-        })
+            axios.post('/api/v1/post',{
+                title: postTitle,
+                text: postText,
+            })
+            .then((res) => {
+                console.log(res.data);
+                document.getElementById("result").innerHTML = res.data;
+            })
+            .catch((err) => {
+                console.log(err);
+                document.getElementById("result").innerHTML = err.data + 'error';
+            })
+            getAllPost();
+        }
 
-
-
-    //     window.getWeather = function(){
-    //         let cityName = document.querySelector("#cityName").value;
-    //         axios.get(`/weather/${cityName}`)
-    //         .then(res => {
-    //             console.log(res.data)
-    //             document.querySelector("#result").innerHTML = `current temperature is ${res.data.tempInC}`;
-    //         }).catch((err) => {
-    //             console.log(err);
-    //             document.querySelector("#result").innerHTML = err;
-    //         })
-    //     }
-
-    //    document.querySelector("#postCommentForm").addEventListener("submit", async(event) => {
-    //         event.preventDefault();
-    //         let nameInput = document.querySelector("#nameInput").value;
-    //         let commentInput = document.querySelector("#commentInput").value;
-    //         try {
-    //             const axiosResponse = await axios.post(`/comment/${nameInput}`, {
-    //                 comment: commentInput,
-    //             });
-    //             console.log(axiosResponse.data);
-    //             document.querySelector("#previousComments").innerHTML += `<div class="comment">
-    //             <h3 class="commentName">${nameInput}</h3>
-    //             <p class="commentText">${commentInput}</p>
-    //             </div>`;
-                
-    //         } catch (err) {
-    //             console.log(err);
-    //             document.querySelector("#result").innerHTML = err;
-    //         }
-    //     })
-
-        // const getAllComments = async() => {
-        //     const commentRes = await axios.get("/comments");
-        //     console.log(commentRes.data);
-        //     commentRes.data?.map((comment) => {
-        //         document.querySelector("#previousComments").innerHTML += `<div class="comment">
-        //         <h3 class="commentName">${comment.name}</h3>
-        //         <p class="commentText">${comment.Input}</p>
-        //         </div>`;
-        //     })
-        // }
-        // getAllComments()
+        window.getAllPost = function () {
+            axios.get('/api/v1/posts')
+            .then((res) => {
+                console.log(res.data);
+                document.getElementById("posts").innerHTML = JSON.stringify(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+                document.getElementById("posts").innerHTML = err.data + 'error';
+            })
+        }
 
     </script>
 </body>

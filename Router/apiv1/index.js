@@ -9,14 +9,15 @@ import postRouter from './routes/post.js'
 router.use(authRouter);  //   (51:/api/v1 )/login
 
 router.use((req, res, next) => {
+    const token = "valid";
     if (token === "valid") {
         next();
     } else {
-        res.send({message: "invalid token "});
+        res.status(401).send({message: "invalid token "});
     }
 })
 
-router.use("/api/v1", commentRouter);
-router.use("/api/v1", postRouter);
+router.use(commentRouter);
+router.use(postRouter);
 
 export default router;

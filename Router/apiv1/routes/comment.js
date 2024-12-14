@@ -3,6 +3,7 @@ const commentRouter = express.Router();
 
 // GET           /api/v1/comment/:userId/:postId
 commentRouter.get('/comment/:userId/:postId', (req, res, next) => {
+    console.log(req.params);
     console.log('comment create');
     res.send('comment created');
 })

@@ -9,6 +9,7 @@ import postRouter from './routes/post.js'
 router.use(authRouter);  //   (51:/api/v1 )/login
 
 router.use((req, res, next) => {
+    const token = "valid";
     if (token === "valid") {
         next();
     } else {
@@ -16,7 +17,7 @@ router.use((req, res, next) => {
     }
 })
 
-router.use("/api/v2", commentRouter);
-router.use("/api/v2", postRouter);
+router.use(commentRouter);
+router.use(postRouter);
 
 export default router;

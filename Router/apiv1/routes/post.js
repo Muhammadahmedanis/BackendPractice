@@ -11,19 +11,18 @@ let post = [
     }
 ];
 
-
 // GET           /api/v1/post/:userId/:postId
 postRouter.get('/post/:postId', (req, res, next) => {
     console.log('post create');
     if(isNaN(req.params.postId)){
         res.status(403).send("post id must be a valid number no alphabet allow");  // mostly alphanueric hoti ha
-    }
-    for(let i = 0; i < post.length; i++){  // map not recommend because we cannot break request
-        if(post[i].id === Number(req.params.postId)){
+        for(let i = 0; i < post.length; i++){  // map not recommend because we cannot break request
+            if(post[i].id === Number(req.params.postId)){
             res.send(post[i]);
             return;
+            }
         }
-    }
+    }   
     res.send("post not found" + req.params.postId);
 })
 

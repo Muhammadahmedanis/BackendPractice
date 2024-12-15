@@ -7,6 +7,7 @@ authRouter.post('/login', (req, res, next) => {
     res.send('login v1 '+ new Date());
 })
 
+
 // authRouter.post('/api/v1/signup', (req, res, next) => {
 authRouter.post('/signup', (req, res, next) => {
     console.log("signup v1");

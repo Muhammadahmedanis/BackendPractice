@@ -18,36 +18,65 @@
 
     <a href="/static/car.jfif">DownloadFile</a>
 
-
-    <h1>My dummy weather App</h1>
+    <h1>Weather App</h1>
     <form id="getWeather">
-        <label for="">City:</label>
-        <input type="text" id="cityName">
-        <br>
-        <button type="submit">Get weather</button>
+        <div>
+            <label for="">City:</label>
+            <input type="text" id="cityName">
+        </div>
+        <br><br>
+        <button type="submit">Submit</button>
     </form>
-    <!-- <form onsubmit=" getWeather(); return false">
-        <label for="">City:</label>
-        <input type="text" id="cityName">
-        <br>
-        <button type="submit">Get Weather</button>
-    </form> -->
     <div id="result"></div>
 
-    <!-- <div id="comments">
-        <h2>Comments</h2>
-        <form id="postCommentForm">
-            <input type="text" id="nameInput" placeholder="Enter your name">
-            <input type="text" id="commentInput" placeholder="Enter your comment">
+    <div id="comments">
+        <h2>Comment box</h2>
+        <form id="commentForm">
+            <input type="text" id="name" placeholder="Enter name">
+            <input type="text" id="commentInput" placeholder="Enter comment">
             <button type="submit">Post</button>
         </form>
         <div id="previousComments">
             
         </div>
-    </div> -->
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module">
+        document.getElementById('getWeather').addEventListener("submit", async(event) => {
+            event.preventDefault();
+            let cityName = document.getElementById("cityName").value;
+            try {
+                const res = await axios.get(`/weather/${cityName}`)
+                console.log(res.data);
+                document.getElementById("result").innerHTML = res.data.temp + " in " + res.data.city;
+            } catch (error) {
+                document.getElementById("result").innerHTML = error + " invalid input";
+            }
+        })
+
+        document.getElementById('commentForm').addEventListener('submit', async(event) => {
+            event.preventDefault();
+            let name = document.getElementById('name').value;
+            let commentInput = document.getElementById('commentInput').value;
+            try {
+                const commentRes = await axios.post(`/comment/${name}`, {
+                    comment: commentInput,
+                });
+            } catch (error) {
+                document.getElementById('previousComments').innerHTML = error;
+            }
+            document.getElementById("previousComments").innerHTML = '';
+            getAllComments()
+        })
+        
+        const getAllComments = async() => {
+            const comments = await axios.get('/comment');
+            comments.data?.map((comment) => {
+                document.getElementById('previousComments').innerHTML += `
+                <div class='comment'> <h2>${comment.name}</h2> <p>${comment.comment}</p> </div>`
+            })
+        }
 
         // window.getWeather = function(){
         // let cityName = document.querySelector("#cityName").value;
@@ -62,67 +91,6 @@
         //     document.querySelector("#result").innerHTML = err;
         // })
         // }
-
-        document.querySelector("#getWeather").addEventListener("submit", async(event) => {
-            event.preventDefault();
-            let cityName = document.getElementById("cityName").value;
-            try {
-               const res = await axios.get(`/weather/${cityName}`);
-               console.log(res.status);
-               
-               document.getElementById("result").innerHTML = res.status === 200 ?  res.data.weatherDataSend.temp : res.data.message;
-            } catch (error) {
-                console.log("error");
-                
-            }
-        })
-
-
-
-    //     window.getWeather = function(){
-    //         let cityName = document.querySelector("#cityName").value;
-    //         axios.get(`/weather/${cityName}`)
-    //         .then(res => {
-    //             console.log(res.data)
-    //             document.querySelector("#result").innerHTML = `current temperature is ${res.data.tempInC}`;
-    //         }).catch((err) => {
-    //             console.log(err);
-    //             document.querySelector("#result").innerHTML = err;
-    //         })
-    //     }
-
-    //    document.querySelector("#postCommentForm").addEventListener("submit", async(event) => {
-    //         event.preventDefault();
-    //         let nameInput = document.querySelector("#nameInput").value;
-    //         let commentInput = document.querySelector("#commentInput").value;
-    //         try {
-    //             const axiosResponse = await axios.post(`/comment/${nameInput}`, {
-    //                 comment: commentInput,
-    //             });
-    //             console.log(axiosResponse.data);
-    //             document.querySelector("#previousComments").innerHTML += `<div class="comment">
-    //             <h3 class="commentName">${nameInput}</h3>
-    //             <p class="commentText">${commentInput}</p>
-    //             </div>`;
-                
-    //         } catch (err) {
-    //             console.log(err);
-    //             document.querySelector("#result").innerHTML = err;
-    //         }
-    //     })
-
-        // const getAllComments = async() => {
-        //     const commentRes = await axios.get("/comments");
-        //     console.log(commentRes.data);
-        //     commentRes.data?.map((comment) => {
-        //         document.querySelector("#previousComments").innerHTML += `<div class="comment">
-        //         <h3 class="commentName">${comment.name}</h3>
-        //         <p class="commentText">${comment.Input}</p>
-        //         </div>`;
-        //     })
-        // }
-        // getAllComments()
-
     </script>
 </body>
 </html>

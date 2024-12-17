@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "25483abe-a9ab-4703-8f52-8814ecdba80f",
+		"name": "Pratice1",
+		"description": "this is practice api doc for my server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40093365"
+	},
+	"item": [
+		{
+			"name": "v2",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "signup",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Good\",\r\n    \"text\": \"Weekend\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "this api is created for authenticate user"
+				},
+				{
+					"name": "post",
+					"item": [
+						{
+							"name": "create post",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"cde\",\r\n    \"text\":\"bad\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/post",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"post"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a post",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/post/699rxGvBFyQUYW3KS5YzM",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"post",
+										"699rxGvBFyQUYW3KS5YzM"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get posts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/posts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a post",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/post/KvDCMo1vPH-TeRyzu-I6Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"post",
+										"KvDCMo1vPH-TeRyzu-I6Z"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a post",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"ghi\",\r\n    \"text\": \"jdwjd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/post/FpTUCTOStK-XpIMe4diZ7",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"post",
+										"FpTUCTOStK-XpIMe4diZ7"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "this api is created for crud operation in post"
+				},
+				{
+					"name": "comment",
+					"item": [
+						{
+							"name": "create comment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Ammar\",\r\n    \"text\": \"ok\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comment",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get comments",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete  a comment",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comment/Je12rvJUmGIilMhJ6T6gp",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comment",
+										"Je12rvJUmGIilMhJ6T6gp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a comment",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Ammar\",\r\n    \"text\": \"good result\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comment/yRPSCH3A9jY0VTyfNNGh4",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comment",
+										"yRPSCH3A9jY0VTyfNNGh4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a comment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v2/comment/yRPSCH3A9jY0VTyfNNGh4",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"comment",
+										"yRPSCH3A9jY0VTyfNNGh4"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "this api is created for crud operation in comment"
+				}
+			]
+		}
+	]
+}

@@ -5,65 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        
+        #posts > div {
+            box-shadow: 0px 0px 10px black;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 10px;
+        }
+        h2 {
+            margin: 0px;
+        }
     </style>
 </head>
-<body onload="getAllPost()">
 
+<body onload="getAllPost()">
     <h1>My post CRUD app</h1>
     <h2>Create a Post</h2>
-    <form onsubmit="createPost(); return false">
+    <form id="createPostForm">
         <label for="postTitle">Title:</label>
         <input id="postTitle" placeholder="Enter title" type="text">
         <br>
 
         <label for="postText">Text:</label>
-        <textarea name="" id="postText" placeholder="Enter text"></textarea>
+        <textarea id="postText" placeholder="Enter text"></textarea>
         <br><br>
 
         <button type="submit">Submit Post</button>
         <br><br>
-
-        <div id="result"></div>
-        <br><br>
-        <div id="posts"></div>
-
     </form>
 
+    <div id="result"></div>
+    <br><br>
+    <div id="posts"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module">            
+    <script>
+        // Bind createPost to form submit
+        const createPostForm = document.getElementById("createPostForm");
+        createPostForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+            createPost();
+        });
 
-        window.createPost = function () {
-            let postTitle = document.getElementById("postTitle").value;
-            let postText = document.getElementById("postText").value;
+        // Create a post
+        function createPost() {
+            const postTitle = document.getElementById("postTitle").value;
+            const postText = document.getElementById("postText").value;
 
-            axios.post('/api/v1/post',{
+            axios.post('/api/v1/post', {
                 title: postTitle,
                 text: postText,
             })
             .then((res) => {
                 console.log(res.data);
                 document.getElementById("result").innerHTML = res.data;
+                getAllPost();
             })
             .catch((err) => {
                 console.log(err);
-                document.getElementById("result").innerHTML = err.data + 'error';
-            })
-            getAllPost();
+                document.getElementById("result").innerHTML = "Error: " + (err.response?.data || "An error occurred");
+            });
         }
 
-        window.getAllPost = function () {
+        // Fetch all posts
+        function getAllPost() {
             axios.get('/api/v1/posts')
             .then((res) => {
                 console.log(res.data);
-                document.getElementById("posts").innerHTML = JSON.stringify(res.data);
+                let postElement = '';
+                res.data.map((val) => {
+                    postElement += `
+                        <div id='card-${val.id}'>
+                            <h2>${val.title}</h2>
+                            <p>${val.text}</p>
+                            <button type="button" onClick="delPost('${val.id}')">Delete</button>
+                            <button type="button" onClick="editPost('${val.id}', '${val.title}', '${val.text}')">Edit</button>
+                        </div>
+                    `;
+                });
+                document.getElementById("posts").innerHTML = postElement;
             })
             .catch((err) => {
                 console.log(err);
-                document.getElementById("posts").innerHTML = err.data + 'error';
-            })
+                document.getElementById("posts").innerHTML = "Error: " + (err.response?.data || "An error occurred");
+            });
         }
 
+        // Delete a post
+        function delPost(postId) {
+            axios.delete(`/api/v1/post/${postId}`)
+            .then((res) => {
+                console.log("Delete successful:", res.data);
+                getAllPost();
+            })
+            .catch((err) => {
+                console.log("Delete failed:", err);
+            });
+        }
+
+        // Edit a post
+        function editPost(postId, title, text) {
+            document.getElementById(`card-${postId}`).innerHTML = `
+                <form id="editForm-${postId}">
+                    Title: <input type="text" value='${title}' id='title-${postId}' />
+                    <br/>
+                    Text: <input type="text" value='${text}' id='text-${postId}' />
+                    <br/>
+                    <button type="submit">Save</button>
+                </form>
+            `;
+
+            // Attach event listener to the dynamically created form
+            const editForm = document.getElementById(`editForm-${postId}`);
+            editForm.addEventListener("submit", function (event) {
+                event.preventDefault(); // Prevent form submission
+                savePost(postId);
+            });
+        }
+
+        // Save a post
+        function savePost(postId) {
+            const updateTitle = document.getElementById(`title-${postId}`).value;
+            const updateText = document.getElementById(`text-${postId}`).value;
+            console.log(postId);
+            axios.put(`/api/v1/post/${postId}`, {
+                id: postId,
+                title: updateTitle,
+                text: updateText,
+            })
+            .then((res) => {
+                console.log("Update successful:", res.data);
+                document.getElementById("result").innerHTML = res.data;
+                getAllPost();
+            })
+            .catch((err) => {
+                console.log("Update failed:", err);
+                document.getElementById("result").innerHTML = "Error: " + (err.response?.data || "An error occurred");
+            });
+        }
     </script>
 </body>
 </html>

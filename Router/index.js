@@ -39,7 +39,7 @@
 // version of routers
 import express from 'express';
 import path from 'path';
-const __dirname = path.resolve();
+const __dirname = path.resolve();  // static page server karna ka lia jo firebase hosting hot ha wo ham jhud kar raha hain
 
 import apiv1Router from '../Router/apiv1/index.js';
 import apiv2Router from '../Router/apiv2/index.js';

@@ -10,20 +10,27 @@ let comments = [
     }
 ]
 
-commentRouter.get('/comment/:commentId', (req, res, next) => {
-    if(isNaN(req.params.commentId)){
-        res.status(403).send("post must id must have a valid aplhanumbric number");
-        for(let i = 0; i < comments.length; i++){
-            if(comments[i].id === req.params.commentId){
-                res.send(comments[i])
-            }
-        }
-    } else {
-        res.status(404).send("post not found" + req.params.commentId);
+commentRouter.get('/comments', (req, res, next) => {
+    try {
+        res.status(200).send(comments)
+    } catch (error) {
+        res.status(404).send("no comment found");        
     }
 })
 
-commentRouter.post('/comment/:commentId', (req, res, next) => {
+commentRouter.get('/comment/:commentId', (req, res, next) => {
+    if(req.params.commentId){
+        for(let i = 0; i < comments.length; i++){
+            if(comments[i].id === req.params.commentId){
+                res.status(200).send(comments[i])
+            }
+        }
+    } else {
+        res.status(403).send("post must id must have a valid id");
+    }
+})
+
+commentRouter.post('/comment', (req, res, next) => {
     if(!req.body.name || !req.body.text){
             res.status(403).send(`required parameter is missing example is: {
             id: nanoid(),
@@ -31,30 +38,31 @@ commentRouter.post('/comment/:commentId', (req, res, next) => {
             text: "skspq",
         }`)
         } else {
-            posts.push({
+            comments.push({
                 id: nanoid(),
                 name: req.body.name,
                 text: req.body.text,
             })
+            res.status(200).send({message: "comment added successfully"});
         }
 })
 
 commentRouter.put('/comment/:commentId', (req, res, next) => {
-    if(isNaN(req.params.commentId)){
+    if(!req.params.commentId){
         res.status(403).send("the given is given is incorrect");
     } else {
-        const index = comments.filter(post => post.id === req.params.commentId);
-        comments.splice(index, 1, {...req.body, id: req.params.body});
-        res.status(200).send("post added successfully");
+        const index = comments.filter(comment => comment.id === req.params.commentId);
+        comments.splice(index, 1, {...req.body, id: req.params.commentId});
+        res.status(200).send("comment updated successfully");
     }
 })
 
 commentRouter.delete('/comment/:commentId', (req, res, send) => {
-    if(isNaN(req.params.commentId)){
+    if(!req.params.commentId){
         res.status(403).send("the given is given is incorrect");
     } else{
-        comments = comments.filter(post => post.id !== req.params.commentId);
-        res.status(200).send("post deleted successfully");
+        comments = comments.filter(comment => comment.id !== req.params.commentId);
+        res.status(200).send("comment deleted successfully");
     }
 })
 
